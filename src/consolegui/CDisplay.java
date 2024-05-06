@@ -2,6 +2,8 @@
  * @author T22CS044 Itsuki Hosaka
  * @version 0.0.1
  */
+package consolegui;
+
 
 import java.util.HashMap;
 import java.util.Map;

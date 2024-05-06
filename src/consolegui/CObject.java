@@ -4,6 +4,7 @@
  * @auther t22cs044 Itsuki Hosaka
  * 
  */
+package consolegui;
 
 import java.util.Map;
 import java.util.Vector;
