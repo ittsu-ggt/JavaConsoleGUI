@@ -1,14 +1,12 @@
 /**
- * CObject.java
+ * @file CObject.java
+ * @author T22CS044 Itsuki Hosaka
  * @version 1.0.0
- * @auther t22cs044 Itsuki Hosaka
- * 
  */
 package consolegui;
 
 import java.util.Map;
 import java.util.Vector;
-import java.io.Console;
 import java.util.HashMap;
 
 /**
