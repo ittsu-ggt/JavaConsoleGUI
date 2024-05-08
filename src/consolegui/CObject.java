@@ -53,6 +53,14 @@ public class CObject {
         return this.CostumeList.get(this.CostumeName);
     }
 
+    /**
+     * 登録先のCViewを取得
+     * @return 登録先のCView
+     */
+    public CDisplay getCView(){
+        return this.CView;
+    }
+
     /// コンストラクター群
     /**
      * コンストラクター．初期のコスチュームを設定する．
