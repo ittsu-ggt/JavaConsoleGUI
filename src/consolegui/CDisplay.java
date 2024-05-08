@@ -202,4 +202,20 @@ public class CDisplay {
         PrintDisplay();
     }
 
+    /**
+     * 画面の幅を取得
+     * @return 画面の幅
+     */
+    public int getWidth(){
+        return Width;
+    }
+
+    /**
+     * 画面の高さを取得
+     * @return 画面の高さ
+     */
+    public int getHeight(){
+        return Height;
+    }
+
 }
