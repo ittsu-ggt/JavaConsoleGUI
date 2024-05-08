@@ -204,7 +204,7 @@ public class CObject {
      * 他のモデルと指定した文字で衝突しているかを判定する
      * @param other 衝突判定を行うモデル
      * @param Word 衝突判定を行う文字
-     * @return
+     * @return 衝突しているかどうか
      */
     public boolean IsHit(CObject other,char Word)
     {
