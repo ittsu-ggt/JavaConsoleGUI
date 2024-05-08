@@ -1,6 +1,7 @@
 /**
+ * @file CDisplay.java
  * @author T22CS044 Itsuki Hosaka
- * @version 0.0.1
+ * @version 1.0.0
  */
 package consolegui;
 
@@ -8,7 +9,6 @@ package consolegui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.lang.ref.Cleaner;
 
 /**
  * コンソール画面制御クラス
@@ -91,12 +91,20 @@ public class CDisplay {
     private void PrintDisplay(){
         String Display = "";
         for (int j = 0; j < Height; j++) {
+            int bg=-1, wc=-1;
             for (int i = 0; i < Width; i++) {
-                Display += BackGroundColorMap.get(Screen[j][i].getBgc());
-                Display += WordColorMap.get(Screen[j][i].getWc());
+                if(bg!=Screen[j][i].getBgc()){
+                    Display += BackGroundColorMap.get(Screen[j][i].getBgc());
+                    bg = Screen[j][i].getBgc();
+                }
+                if(wc!=Screen[j][i].getWc()){
+                    Display += WordColorMap.get(Screen[j][i].getWc());
+                    wc = Screen[j][i].getWc();
+                }
                 Display += Screen[j][i].getW();
             }
-            Display += "\u001B[0m\n"; //色のリセット及び改行
+            Display += "\u001B[0m"; //色のリセット
+            Display += "\n"; //改行
         }
         System.out.print("\033[H\033[2J"); //画面クリア
         System.out.flush();
@@ -116,7 +124,11 @@ public class CDisplay {
         ObjectsList = new Vector<CObject>();
         System.out.print("\033[?25l"); //カーソル非表示
         Runtime.getRuntime().addShutdownHook(new Thread(
-            () -> System.out.println("\033[?25h")
+            () -> {
+                System.out.println("\033[?25h");
+                System.out.print("\u001B[0m"); //色のリセット
+                System.out.print("\033[H\033[2J"); //画面クリア
+            }
             ));// シャットダウンフックの登録
     }
 
