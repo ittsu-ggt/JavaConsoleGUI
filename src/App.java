@@ -1,5 +1,5 @@
 import java.util.Vector;
-import ConsoleGUI.CDisplay;
+import consolegui.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
