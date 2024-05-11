@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * スプライトの構築を行うクラス
+ * スプライトの構築を行うクラス．ファイルやVector型のデータからスプライトを構築することができる
  */
 public class SpriteBuildService {
     /**
@@ -28,7 +28,7 @@ public class SpriteBuildService {
      * @param SpriteData スプライトデータ
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(Vector<Vector<Character>> SpriteData) {
+    public static Vector<Vector<DrawCell>> BuildModel(List<List<Character>> SpriteData) {
         return BuildModel(SpriteData, 0, 0);
     }
 
@@ -40,8 +40,8 @@ public class SpriteBuildService {
      * @param SpriteColor     文字色
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(Vector<Vector<Character>> SpriteData,
-            Vector<Vector<Integer>> SpriteColor, Vector<Vector<Integer>> BackGroundColor) {
+    public static Vector<Vector<DrawCell>> BuildModel(List<List<Character>> SpriteData,
+                List<List<Integer>> SpriteColor, List<List<Integer>> BackGroundColor) {
         // 引数のサイズチェック
         if (SpriteData.size() != BackGroundColor.size() || SpriteData.size() != SpriteColor.size()) {
             throw new IllegalArgumentException(
@@ -75,7 +75,7 @@ public class SpriteBuildService {
      * @param SpriteColor     文字色番号
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(Vector<Vector<Character>> SpriteData,int SpriteColor, int BackGroundColor) {
+    public static Vector<Vector<DrawCell>> BuildModel(List<List<Character>> SpriteData,int SpriteColor, int BackGroundColor) {
         Vector<Vector<Integer>> BackGroundColor_tmp = new Vector<Vector<Integer>>();
         Vector<Vector<Integer>> SpriteColor_tmp = new Vector<Vector<Integer>>();
         for (int i = 0; i < SpriteData.size(); i++) {
