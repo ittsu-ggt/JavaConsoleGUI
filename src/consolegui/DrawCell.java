@@ -5,6 +5,9 @@
  */
 package consolegui;
 
+/**
+ * 画面に表示する情報をセル毎保持するクラス
+ */
 public class DrawCell {
     private char w;
     private int wc;

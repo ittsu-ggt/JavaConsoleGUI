@@ -54,7 +54,7 @@ public class StringService extends CObject {
 
     /**
      * 文字列を変更する
-     * @param str
+     * @param str 文字列
      */
     public void ChangeString(String str)
     {

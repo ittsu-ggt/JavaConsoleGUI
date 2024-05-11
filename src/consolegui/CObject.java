@@ -18,9 +18,20 @@ public class CObject {
     private String CostumeName; // コスチューム名
     private CDisplay CView; // 登録先コンソールビュー
 
-    private int X = 0; //x座標
-    private int Y = 0; //y座標
-    public boolean IsVisible = true; //表示フラグ
+    /**
+     * モデルのx座標
+     */
+    public int X = 0;
+
+    /**
+     * モデルのy座標
+     */
+    public int Y = 0;
+    
+    /**
+     * 表示フラグ
+     */
+    public boolean IsVisible = true;
 
 
     /// モデルの情報を取得するメソッド群
@@ -71,8 +82,11 @@ public class CObject {
     /// コンストラクター群
     /**
      * コンストラクター．初期のコスチュームを設定する．
+     * @param CView 表示先
      * @param CostumeName コスチュームの名前
      * @param CostumeData コスチュームのデータ
+     * @param x x座標
+     * @param y y座標
      * @param IsVisible 表示フラグ
      */
     public CObject(CDisplay CView, String CostumeName, Vector<Vector<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
@@ -86,7 +100,10 @@ public class CObject {
     }
     /**
      * コンストラクター．初期のコスチュームを設定する．なお，コスチューム名は"Default"となる
+     * @param CView 表示先
      * @param CostumeData コスチュームのデータ
+     * @param x x座標
+     * @param y y座標
      * @param IsVisible 表示フラグ
      */
     public CObject(CDisplay CView,Vector<Vector<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
@@ -170,6 +187,10 @@ public class CObject {
         this.CView.ChangeObjectDrawingOrder(this, order);
     }
 
+    /**
+     * モデルの表示先を変更する
+     * @param CView 表示先
+     */
     public void ChangeDrawingDisplay(CDisplay CView){
         CView.RemoveObject(this);
         this.CView = CView;
@@ -177,6 +198,9 @@ public class CObject {
         return ;
     }
 
+    /**
+     * モデルを削除する
+     */
     public void RemoveMe(){
         this.CView.RemoveObject(this);
     }
