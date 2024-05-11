@@ -6,6 +6,7 @@
 package consolegui;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -18,7 +19,7 @@ public class CDisplay {
     private int CameraY; // 表示場所y座標
     private int Width; // 幅
     private int Height; // 高さ
-    private Vector<CObject> ObjectsList; // 描画オブジェクトリスト
+    private LinkedList<CObject> ObjectsList; // 描画オブジェクトリスト
 
     /**
      * 背景色のマップ
@@ -120,7 +121,7 @@ public class CDisplay {
         Width = width;
         Height = height;
         Screen = new DrawCell[Height][Width];
-        ObjectsList = new Vector<CObject>();
+        ObjectsList = new LinkedList<CObject>();
         System.out.print("\033[?25l"); // カーソル非表示
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {
