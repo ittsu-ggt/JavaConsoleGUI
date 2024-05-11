@@ -60,6 +60,13 @@ public class CObject {
     public CDisplay getCView(){
         return this.CView;
     }
+    /**
+     * 表示フラグを取得
+     * @return 表示フラグ
+     */
+    public boolean getIsVisible(){
+        return this.IsVisible;
+    }
 
     /// コンストラクター群
     /**
@@ -68,22 +75,22 @@ public class CObject {
      * @param CostumeData コスチュームのデータ
      * @param IsVisible 表示フラグ
      */
-    public CObject(CDisplay CView, String CostumeName, Vector<Vector<DrawCell>> CostumeData,boolean IsVisible) {
+    public CObject(CDisplay CView, String CostumeName, Vector<Vector<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
         this.CostumeList = new HashMap<String, Vector<Vector<DrawCell>>>();
         AddCostume(CostumeName, CostumeData);
         this.CView = CView;
         this.CostumeName = CostumeName;
         this.IsVisible = IsVisible;
-        this.SetLocation(0, 0);
+        this.SetLocation(x, y);
         CView.AddObject(this);
     }
     /**
-     * コンストラクター．初期のコスチュームを設定する．
+     * コンストラクター．初期のコスチュームを設定する．なお，コスチューム名は"Default"となる
      * @param CostumeData コスチュームのデータ
      * @param IsVisible 表示フラグ
      */
-    public CObject(CDisplay CView,Vector<Vector<DrawCell>> CostumeData,boolean IsVisible) {
-        this(CView,"Default", CostumeData,IsVisible);
+    public CObject(CDisplay CView,Vector<Vector<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
+        this(CView,"Default", CostumeData, x, y,IsVisible);
     }
 
     /**
@@ -114,12 +121,6 @@ public class CObject {
         if(!this.CostumeList.containsKey(CostumeName))throw new IllegalArgumentException(this.getClass().getName()+" : 存在しないコスチューム名です");
         this.CostumeList.remove(CostumeName);
         return;
-    }
-    /**
-     * デストラクター．ディスプレイからの登録を解除する．
-     */
-    protected void finalize(){
-        CView.RemoveObject(this);
     }
 
     /// モデルの操作群
@@ -172,6 +173,10 @@ public class CObject {
         this.CView = CView;
         CView.AddObject(this);
         return ;
+    }
+
+    public void RemoveMe(){
+        this.CView.RemoveObject(this);
     }
 
     /// モデル同士の衝突判定群
