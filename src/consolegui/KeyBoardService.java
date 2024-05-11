@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
+/**
+ * キーボード入力を取得するクラス
+ */
 public class KeyBoardService extends Thread{
     private int DelayTime;
     private static LinkedList<Character> KeyInput = new LinkedList<Character>();

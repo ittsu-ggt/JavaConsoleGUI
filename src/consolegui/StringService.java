@@ -2,11 +2,14 @@
  * @file StringService.java
  * @author T22CS044 Itsuki Hosaka
  * @version 1.0.0
- * @description Cobjectを利用して，文字列を表示します．本クラスを使用することにより，文字列に関する動作を更に簡単に行うことができます．
+ * 
  */
 package consolegui;
 import java.util.Vector;
 
+/**
+ * Cobjectを利用して，文字列を表示します．本クラスを使用することにより，文字列に関する動作を更に簡単に行うことができます．
+ */
 public class StringService extends CObject {
     
     private String str; // 文字列
