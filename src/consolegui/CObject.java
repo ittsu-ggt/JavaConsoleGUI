@@ -158,7 +158,9 @@ public class CObject {
      * モデルの描画順序を下げる
      */
     public void ChangeDrawingOrderDown(){
-        this.CView.ChangeObjectDrawingOrder(this, this.CView.getObjectDrawingOrder(this) - 1);
+        var t =this.CView.getObjectDrawingOrder(this)-1;
+        if(t<0)t=0;
+        this.CView.ChangeObjectDrawingOrder(this, t);
     }
     /**
      * モデルの描画順序を変更する
