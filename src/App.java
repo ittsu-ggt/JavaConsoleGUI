@@ -14,7 +14,8 @@ public class App {
         CObject obj = new CObject(view, service.BuildModel(spriteData,1,8), true);
         view.Update();
         obj.SetLocation(0,0);
-        while(true){
+        int a=0;
+        while(a<2){
             for(int i=0;i<90;i++){
                 Thread.sleep(50);
                 obj.MoveLocation(1, 0);
@@ -35,6 +36,8 @@ public class App {
                 obj.MoveLocation(0, -1);
                 view.Update();
             }
+            a++;
         }
+        obj.RemoveMe();
     }
 }
