@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"consolegui"},{"l":"すべてのパッケージ","u":"allpackages-index.html"}];updateSearchResults();
