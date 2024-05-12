@@ -61,7 +61,7 @@ public class CDisplay {
     private void Clear() {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
-                Screen[j][i] = new DrawCell('　', 0, 0);
+                Screen[j][i] = new DrawCell(' ', 0, 0);
             }
         }
     }
@@ -94,17 +94,17 @@ public class CDisplay {
         for (int j = 0; j < Height; j++) {
             int bg = -1, wc = -1;
             for (int i = 0; i < Width; i++) {
-                if (bg != Screen[j][i].getBgc()) {
-                    bg = Screen[j][i].getBgc();
+                if (bg != Screen[j][i].bgColor) {
+                    bg = Screen[j][i].bgColor;
                     Display.append(BackGroundColorMap.get(bg));
 
                 }
-                if (wc != Screen[j][i].getWc()) {
-                    wc = Screen[j][i].getWc();
+                if (wc != Screen[j][i].wordColor) {
+                    wc = Screen[j][i].wordColor;
                     Display.append(WordColorMap.get(wc));
                     
                 }
-                Display.append(Screen[j][i].getW());
+                Display.append(Screen[j][i].word);
             }
             Display.append("\u001B[0m"); // 色のリセット
             Display.append("\n"); // 改行

@@ -27,7 +27,7 @@ public class StringService extends CObject {
      * @param isvisible 表示フラグ
      */
     public StringService(CDisplay CView,String str,int x,int y,int SpriteColor,int BackGroundColor,boolean isvisible) {
-        super(CView,SpriteBuildService.BuildModel(new ArrayList<ArrayList<Character>>(' '), 0, 0),x,y,false);
+        super(CView,SpriteBuildService.BuildModel(new ArrayList<ArrayList<Character>>(' '), 0, 0),x,y,isvisible);
         this.str=str;
         this.SpriteColor=SpriteColor;
         this.BackGroundColor=BackGroundColor;

@@ -117,15 +117,15 @@ public class CObject {
      */
     public void AddCostume(String CostumeName, ArrayList<ArrayList<DrawCell>> SpriteData){
         if(this.CostumeList.containsKey(CostumeName))throw new IllegalArgumentException(this.getClass().getName()+" : 既に存在するコスチューム名です");
-        for(int i=0;i<SpriteData.size();i++){
-            for(int j=0;j<SpriteData.get(i).size();j++){
-                int w = (int)SpriteData.get(i).get(j).getW();
-                if ((w >= 0x0021 && w <= 0x007E)) {
-                    var cell = new DrawCell((char) (w + 0xFF00), SpriteData.get(i).get(j).getWc(), SpriteData.get(i).get(j).getBgc());
-                    SpriteData.get(i).set(j, cell);
-                }
-            }
-        }
+        // for(int i=0;i<SpriteData.size();i++){
+        //     for(int j=0;j<SpriteData.get(i).size();j++){
+        //         char w=SpriteData.get(i).get(j).word;
+        //         char W=HalfullConverter.halfToFull(w);
+        //         if(w!=W){
+        //             SpriteData.get(i).get(j).word=W;
+        //         }
+        //     }
+        // }
         this.CostumeList.put(CostumeName, SpriteData);
         return;
     }
@@ -230,8 +230,8 @@ public class CObject {
                 if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().get(0).size() && 
                     TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
                 {
-                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).getW() != ' ' && 
-                        other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).getW() != ' ')
+                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word != ' ' && 
+                        other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word != ' ')
                     {
                         return true;
                     }
@@ -256,7 +256,7 @@ public class CObject {
                 TmpY = this.Y + i;
                 if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
                 {
-                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).getW() == Word && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).getW() != ' ')
+                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word == Word && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word != ' ')
                     {
                         return true;
                     }

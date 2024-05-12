@@ -9,9 +9,18 @@ package consolegui;
  * 画面に表示する情報をセル毎保持するクラス
  */
 public class DrawCell {
-    private char w;
-    private int wc;
-    private int bgc;
+    /**
+     * 文字
+     */
+    public char word;
+    /**
+     * 文字色
+     */
+    public int wordColor;
+    /**
+     * 背景色
+     */
+    public int bgColor;
     /**
      * コンストラクター
      * @param w 文字  
@@ -19,29 +28,8 @@ public class DrawCell {
      * @param wc 文字色
      */
     public DrawCell(char w, int wc, int bgc) {
-        this.w = w;
-        this.wc = wc;
-        this.bgc = bgc;
-    }
-    /**
-     * 文字を取得
-     * @return 文字
-     */
-    public char getW() {
-        return w;
-    }
-    /**
-     * 文字色を取得
-     * @return 文字色
-     */
-    public int getWc() {
-        return wc;
-    }
-    /**
-     * 背景色を取得
-     * @return 背景色
-     */
-    public int getBgc() {
-        return bgc;
+        this.word = w;
+        this.wordColor = wc;
+        this.bgColor = bgc;
     }
 }
