@@ -6,15 +6,15 @@
 package consolegui;
 
 import java.util.Map;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * CDisplayに登録するオブジェクトのクラス
+ * CDisplayに登録するオブジェクトのクラス．
  */
 public class CObject {
 
-    private Map<String,Vector<Vector<DrawCell>>> CostumeList ; // 2次元配列の宣言
+    private Map<String,ArrayList<ArrayList<DrawCell>>> CostumeList ; // 2次元配列の宣言
     private String CostumeName; // コスチューム名
     private CDisplay CView; // 登録先コンソールビュー
 
@@ -60,7 +60,7 @@ public class CObject {
      * 現在のコスチュームデータを取得
      * @return 現在のコスチュームデータ
      */
-    public Vector<Vector<DrawCell>> GetCostumeData(){
+    public ArrayList<ArrayList<DrawCell>> GetCostumeData(){
         return this.CostumeList.get(this.CostumeName);
     }
 
@@ -89,8 +89,8 @@ public class CObject {
      * @param y y座標
      * @param IsVisible 表示フラグ
      */
-    public CObject(CDisplay CView, String CostumeName, Vector<Vector<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
-        this.CostumeList = new HashMap<String, Vector<Vector<DrawCell>>>();
+    public CObject(CDisplay CView, String CostumeName, ArrayList<ArrayList<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
+        this.CostumeList = new HashMap<String, ArrayList<ArrayList<DrawCell>>>();
         AddCostume(CostumeName, CostumeData);
         this.CView = CView;
         this.CostumeName = CostumeName;
@@ -106,7 +106,7 @@ public class CObject {
      * @param y y座標
      * @param IsVisible 表示フラグ
      */
-    public CObject(CDisplay CView,Vector<Vector<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
+    public CObject(CDisplay CView,ArrayList<ArrayList<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
         this(CView,"Default", CostumeData, x, y,IsVisible);
     }
 
@@ -115,8 +115,17 @@ public class CObject {
      * @param CostumeName コスチュームの名前
      * @param SpriteData コスチュームのデータ
      */
-    public void AddCostume(String CostumeName, Vector<Vector<DrawCell>> SpriteData){
+    public void AddCostume(String CostumeName, ArrayList<ArrayList<DrawCell>> SpriteData){
         if(this.CostumeList.containsKey(CostumeName))throw new IllegalArgumentException(this.getClass().getName()+" : 既に存在するコスチューム名です");
+        for(int i=0;i<SpriteData.size();i++){
+            for(int j=0;j<SpriteData.get(i).size();j++){
+                int w = (int)SpriteData.get(i).get(j).getW();
+                if ((w >= 0x0021 && w <= 0x007E)) {
+                    var cell = new DrawCell((char) (w + 0xFF00), SpriteData.get(i).get(j).getWc(), SpriteData.get(i).get(j).getBgc());
+                    SpriteData.get(i).set(j, cell);
+                }
+            }
+        }
         this.CostumeList.put(CostumeName, SpriteData);
         return;
     }

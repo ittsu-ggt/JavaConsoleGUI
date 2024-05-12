@@ -5,7 +5,7 @@
  * 
  */
 package consolegui;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Cobjectを利用して，文字列を表示します．本クラスを使用することにより，文字列に関する動作を更に簡単に行うことができます．
@@ -27,7 +27,7 @@ public class StringService extends CObject {
      * @param isvisible 表示フラグ
      */
     public StringService(CDisplay CView,String str,int x,int y,int SpriteColor,int BackGroundColor,boolean isvisible) {
-        super(CView,SpriteBuildService.BuildModel(new Vector<Vector<Character>>(' '), 0, 0),x,y,false);
+        super(CView,SpriteBuildService.BuildModel(new ArrayList<ArrayList<Character>>(' '), 0, 0),x,y,false);
         this.str=str;
         this.SpriteColor=SpriteColor;
         this.BackGroundColor=BackGroundColor;
@@ -36,7 +36,7 @@ public class StringService extends CObject {
 
     private void reflection()
     {
-        Vector<Character> tmp = new Vector<Character>();
+        ArrayList<Character> tmp = new ArrayList<Character>();
         for(int i=0;i<str.length();i++)
         {
             tmp.add(str.charAt(i));
@@ -45,7 +45,7 @@ public class StringService extends CObject {
         {
             return;
         }
-        Vector<Vector<Character>> tmp2=new Vector<Vector<Character>>();
+        ArrayList<ArrayList<Character>> tmp2=new ArrayList<ArrayList<Character>>();
         tmp2.add(tmp);
         this.AddCostume(str,SpriteBuildService.BuildModel(tmp2, SpriteColor, BackGroundColor));
         var cos_t= this.getCostumeName();

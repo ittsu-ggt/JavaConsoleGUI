@@ -11,9 +11,8 @@ public class App {
         row.add('B');
         row.add('C');
         spriteData.add(row);
-        CObject obj = new CObject(view, service.BuildModel(spriteData,1,8), true);
+        CObject obj = new CObject(view, service.BuildModel(spriteData,1,8), 0,0,true);
         view.Update();
-        obj.SetLocation(0,0);
         int a=0;
         while(a<2){
             for(int i=0;i<90;i++){
@@ -41,3 +40,4 @@ public class App {
         obj.RemoveMe();
     }
 }
+

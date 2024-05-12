@@ -8,7 +8,7 @@ package consolegui;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * コンソール画面制御クラス
@@ -61,7 +61,7 @@ public class CDisplay {
     private void Clear() {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
-                Screen[j][i] = new DrawCell(' ', 0, 0);
+                Screen[j][i] = new DrawCell('　', 0, 0);
             }
         }
     }
@@ -72,7 +72,7 @@ public class CDisplay {
     private void ViewDataImport() {
         for (CObject obj : ObjectsList) {
             if (obj.IsVisible) {
-                Vector<Vector<DrawCell>> Model = obj.GetCostumeData();
+                ArrayList<ArrayList<DrawCell>> Model = obj.GetCostumeData();
                 for (int i = 0; i < Model.size(); i++) {
                     for (int j = 0; j < Model.get(i).size(); j++) {
                         if (obj.getX() + j >= CameraX && obj.getX() + j < CameraX + Width && obj.getY() + i >= CameraY
@@ -95,12 +95,14 @@ public class CDisplay {
             int bg = -1, wc = -1;
             for (int i = 0; i < Width; i++) {
                 if (bg != Screen[j][i].getBgc()) {
-                    Display.append(BackGroundColorMap.get(Screen[j][i].getBgc()));
                     bg = Screen[j][i].getBgc();
+                    Display.append(BackGroundColorMap.get(bg));
+
                 }
                 if (wc != Screen[j][i].getWc()) {
-                    Display.append(WordColorMap.get(Screen[j][i].getWc()));
                     wc = Screen[j][i].getWc();
+                    Display.append(WordColorMap.get(wc));
+                    
                 }
                 Display.append(Screen[j][i].getW());
             }
