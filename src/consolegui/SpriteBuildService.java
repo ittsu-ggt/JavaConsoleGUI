@@ -10,10 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
- * スプライトの構築を行うクラス．ファイルやVector型のデータからスプライトを構築することができる
+ * スプライトの構築を行うクラス．ファイルやListインターフェースをもつ型のデータからスプライトを構築することができる
  */
 public class SpriteBuildService {
     /**
@@ -28,7 +28,7 @@ public class SpriteBuildService {
      * @param SpriteData スプライトデータ
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(List<List<Character>> SpriteData) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(List<? extends List<Character>> SpriteData) {
         return BuildModel(SpriteData, 0, 0);
     }
 
@@ -40,8 +40,8 @@ public class SpriteBuildService {
      * @param SpriteColor     文字色
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(List<List<Character>> SpriteData,
-                List<List<Integer>> SpriteColor, List<List<Integer>> BackGroundColor) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(List<? extends List<Character>> SpriteData,
+                List<? extends List<Integer>> SpriteColor, List<? extends List<Integer>> BackGroundColor) {
         // 引数のサイズチェック
         if (SpriteData.size() != BackGroundColor.size() || SpriteData.size() != SpriteColor.size()) {
             throw new IllegalArgumentException(
@@ -55,9 +55,9 @@ public class SpriteBuildService {
             }
         }
 
-        Vector<Vector<DrawCell>> Cell_tmp = new Vector<Vector<DrawCell>>(); // 2次元配列の初期化
+        ArrayList<ArrayList<DrawCell>> Cell_tmp = new ArrayList<ArrayList<DrawCell>>(); // 2次元配列の初期化
         for (int i = 0; i < SpriteData.size(); i++) {
-            Vector<DrawCell> row = new Vector<DrawCell>();
+            ArrayList<DrawCell> row = new ArrayList<DrawCell>();
             for (int j = 0; j < SpriteData.get(i).size(); j++) {
                 row.add(new DrawCell(SpriteData.get(i).get(j), SpriteColor.get(i).get(j),
                         BackGroundColor.get(i).get(j)));
@@ -75,12 +75,12 @@ public class SpriteBuildService {
      * @param SpriteColor     文字色番号
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(List<List<Character>> SpriteData,int SpriteColor, int BackGroundColor) {
-        Vector<Vector<Integer>> BackGroundColor_tmp = new Vector<Vector<Integer>>();
-        Vector<Vector<Integer>> SpriteColor_tmp = new Vector<Vector<Integer>>();
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(List<? extends List<Character>> SpriteData,int SpriteColor, int BackGroundColor) {
+        ArrayList<ArrayList<Integer>> BackGroundColor_tmp = new ArrayList<ArrayList<Integer>>();
+        ArrayList<ArrayList<Integer>> SpriteColor_tmp = new ArrayList<ArrayList<Integer>>();
         for (int i = 0; i < SpriteData.size(); i++) {
-            Vector<Integer> BackGroundColor_row = new Vector<Integer>();
-            Vector<Integer> SpriteColor_row = new Vector<Integer>();
+            ArrayList<Integer> BackGroundColor_row = new ArrayList<Integer>();
+            ArrayList<Integer> SpriteColor_row = new ArrayList<Integer>();
             for (int j = 0; j < SpriteData.get(i).size(); j++) {
                 BackGroundColor_row.add(BackGroundColor);
                 SpriteColor_row.add(SpriteColor);
@@ -91,10 +91,10 @@ public class SpriteBuildService {
         return BuildModel(SpriteData, SpriteColor_tmp, BackGroundColor_tmp);
     }
 
-    private static Vector<Vector<Character>> LineConverterToCharacter(List<String> lines) {
-        Vector<Vector<Character>> tmp = new Vector<Vector<Character>>();
+    private static ArrayList<ArrayList<Character>> LineConverterToCharacter(List<String> lines) {
+        ArrayList<ArrayList<Character>> tmp = new ArrayList<ArrayList<Character>>();
         for (int i = 0; i < lines.size(); i++) {
-            Vector<Character> tmp2 = new Vector<Character>();
+            ArrayList<Character> tmp2 = new ArrayList<Character>();
             for (int j = 0; j < lines.get(i).length(); j++) {
                 tmp2.add(lines.get(i).charAt(j));
             }
@@ -103,10 +103,10 @@ public class SpriteBuildService {
         return tmp;
     }
 
-    private static Vector<Vector<Integer>> LineConverterToInteger(List<String> lines) {
-        Vector<Vector<Integer>> tmp = new Vector<Vector<Integer>>();
+    private static ArrayList<ArrayList<Integer>> LineConverterToInteger(List<String> lines) {
+        ArrayList<ArrayList<Integer>> tmp = new ArrayList<ArrayList<Integer>>();
         for (int i = 0; i < lines.size(); i++) {
-            Vector<Integer> tmp2 = new Vector<Integer>();
+            ArrayList<Integer> tmp2 = new ArrayList<Integer>();
             for (int j = 0; j < lines.get(i).length(); j++) {
                 tmp2.add(Integer.parseInt(lines.get(i).substring(j, j + 1)));
             }
@@ -132,15 +132,15 @@ public class SpriteBuildService {
      * @param AllSpriteFilePath スプライトデータ・文字色・背景色ファイル
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(String AllSpriteFilePath) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(String AllSpriteFilePath) {
         List<String> lines = FileReader(AllSpriteFilePath);
         if(lines.size()%3!=0)
         {
             throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : ファイルの内容が不正です．ファイル名 : "+AllSpriteFilePath);
         }
-        Vector<Vector<Character>> SpriteData = LineConverterToCharacter(lines.subList(0, lines.size()/3));
-        Vector<Vector<Integer>> SpriteColor = LineConverterToInteger(lines.subList(lines.size()/3, lines.size()/3*2));
-        Vector<Vector<Integer>> BackGroundColor = LineConverterToInteger(lines.subList(lines.size()/3*2, lines.size()));
+        ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(lines.subList(0, lines.size()/3));
+        ArrayList<ArrayList<Integer>> SpriteColor = LineConverterToInteger(lines.subList(lines.size()/3, lines.size()/3*2));
+        ArrayList<ArrayList<Integer>> BackGroundColor = LineConverterToInteger(lines.subList(lines.size()/3*2, lines.size()));
         return BuildModel(SpriteData, SpriteColor, BackGroundColor);
     }
 
@@ -151,9 +151,9 @@ public class SpriteBuildService {
      * @param BackGroundColor 背景色
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(String SpriteFilePath,int SpriteColor, int BackGroundColor) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(String SpriteFilePath,int SpriteColor, int BackGroundColor) {
         List<String> lines = FileReader(SpriteFilePath);
-        Vector<Vector<Character>> SpriteData = LineConverterToCharacter(lines);
+        ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(lines);
         return BuildModel(SpriteData,SpriteColor, BackGroundColor);
     }
     /**
@@ -163,10 +163,10 @@ public class SpriteBuildService {
      * @param BackGroundColorFilePath 背景色ファイル
      * @return 構築済みスプライト
      */
-    public static Vector<Vector<DrawCell>> BuildModel(String SpriteFilePath, String SpriteColorFilePath,String BackGroundColorFilePath) {
-        Vector<Vector<Character>> SpriteData = LineConverterToCharacter(FileReader(SpriteFilePath));
-        Vector<Vector<Integer>> SpriteColor = LineConverterToInteger(FileReader(SpriteColorFilePath));
-        Vector<Vector<Integer>> BackGroundColor = LineConverterToInteger(FileReader(BackGroundColorFilePath));
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(String SpriteFilePath, String SpriteColorFilePath,String BackGroundColorFilePath) {
+        ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(FileReader(SpriteFilePath));
+        ArrayList<ArrayList<Integer>> SpriteColor = LineConverterToInteger(FileReader(SpriteColorFilePath));
+        ArrayList<ArrayList<Integer>> BackGroundColor = LineConverterToInteger(FileReader(BackGroundColorFilePath));
         return BuildModel(SpriteData, SpriteColor, BackGroundColor);
     }
 }
