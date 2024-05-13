@@ -20,40 +20,17 @@ public class CDisplay {
     private int Width; // 幅
     private int Height; // 高さ
     private LinkedList<CObject> ObjectsList; // 描画オブジェクトリスト
+    private boolean IsFullWord; // 全角文字で使用するか
+    /**
+     * デフォルトの文字色．本クラスはスプライトの色指定が0の場合はこの設定を優先します
+     */
+    public int defaultWordColor ; 
+    /**
+     * デフォルトの文字色．本クラスはスプライトの色指定が0の場合はこの設定を優先します
+     */
+    public int defaultBackGroundColor ; 
 
-    /**
-     * 背景色のマップ
-     */
-    private Map<Integer, String> BackGroundColorMap = new HashMap<Integer, String>() {
-        {
-            put(0, "\u001B[47m"); // デフォルト
-            put(1, "\u001B[40m"); // 黒
-            put(2, "\u001B[41m"); // 赤
-            put(3, "\u001B[42m"); // 緑
-            put(4, "\u001B[43m"); // 黄
-            put(5, "\u001B[44m"); // 青
-            put(6, "\u001B[45m"); // 紫
-            put(7, "\u001B[46m"); // 水
-            put(8, "\u001B[47m"); // 白
-        }
-    };
-    /**
-     * 文字色のマップ
-     */
-    private Map<Integer, String> WordColorMap = new HashMap<Integer, String>() // Mapの宣言、初期化
-    {
-        {
-            put(0, "\u001B[31m"); // デフォルト
-            put(1, "\u001B[30m"); // 黒
-            put(2, "\u001B[31m"); // 赤
-            put(3, "\u001B[32m"); // 緑
-            put(4, "\u001B[33m"); // 黄
-            put(5, "\u001B[34m"); // 青
-            put(6, "\u001B[35m"); // 紫
-            put(7, "\u001B[36m"); // 水
-            put(8, "\u001B[37m"); // 白
-        }
-    };
+    
 
     /**
      * 描画メモリのクリア
@@ -61,7 +38,8 @@ public class CDisplay {
     private void Clear() {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
-                Screen[j][i] = new DrawCell(' ', 0, 0);
+                if(IsFullWord) Screen[j][i] = new DrawCell('　', defaultWordColor, defaultBackGroundColor);
+                else Screen[j][i] = new DrawCell(' ', defaultWordColor, defaultBackGroundColor);
             }
         }
     }
@@ -91,17 +69,19 @@ public class CDisplay {
     private void PrintDisplay() {
         StringBuffer Display = new StringBuffer();
         Display.append("\033[H\033[2J"); // 画面クリア
+
+        // Display.append("\f"); // 画面クリア
         for (int j = 0; j < Height; j++) {
             int bg = -1, wc = -1;
             for (int i = 0; i < Width; i++) {
                 if (bg != Screen[j][i].bgColor) {
                     bg = Screen[j][i].bgColor;
-                    Display.append(BackGroundColorMap.get(bg));
+                    Display.append(CColor.getBackGroundColor(bg));
 
                 }
                 if (wc != Screen[j][i].wordColor) {
                     wc = Screen[j][i].wordColor;
-                    Display.append(WordColorMap.get(wc));
+                    Display.append(CColor.getWordColor(wc));
                     
                 }
                 Display.append(Screen[j][i].word);
@@ -109,6 +89,8 @@ public class CDisplay {
             Display.append("\u001B[0m"); // 色のリセット
             Display.append("\n"); // 改行
         }
+        // Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
+        // Display.append("\033[" + Height + "A"); // カーソルの位置を画面の幅分戻す
         System.out.flush();
         System.out.print(Display);
     }
@@ -118,19 +100,36 @@ public class CDisplay {
      * 
      * @param width  画面の幅
      * @param height 画面の高さ
+     * @param defaultWordColor デフォルトの文字色
+     * @param defaultBackGroundColor デフォルトの背景色
+     * @param isFullWord 全角文字で使用するか．この設定を有効にすると，全角文字を使用する場合には半角文字2文字分の幅を使用します
      */
-    public CDisplay(int width, int height) {
-        Width = width;
-        Height = height;
+    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord) {
+        this.Width = width;
+        this.Height = height;
+        this.defaultWordColor = defaultWordColor;
+        this.defaultBackGroundColor = defaultBackGroundColor;
+        this.IsFullWord = isFullWord;
         Screen = new DrawCell[Height][Width];
         ObjectsList = new LinkedList<CObject>();
         System.out.print("\033[?25l"); // カーソル非表示
+        System.out.print("\f"); // カーソル非表示
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {
                     System.out.println("\033[?25h");
                     System.out.print("\u001B[0m"); // 色のリセット
                     System.out.print("\033[H\033[2J"); // 画面クリア
                 }));// シャットダウンフックの登録
+    }
+
+    /**
+     * コンストラクター
+     * 
+     * @param width  画面の幅
+     * @param height 画面の高さ
+     */
+    public CDisplay(int width, int height) {
+        this(width, height, 0,0,false);
     }
 
     /**
@@ -241,6 +240,12 @@ public class CDisplay {
      */
     public int getHeight() {
         return Height;
+    }
+    /**
+     * 全角文字を使用するかの問い合わせ
+     */
+    public boolean getIsFullWord(){
+        return IsFullWord;
     }
 
 }
