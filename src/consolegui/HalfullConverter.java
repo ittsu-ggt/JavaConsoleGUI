@@ -5,6 +5,8 @@
  */
 package consolegui;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -130,6 +132,22 @@ public class HalfullConverter {
         }
     };
 
+    private static Map<Character, Character> HalfToFullMap  = new HashMap<Character, Character>() {
+        {
+            for(Halfull h : halfullList) {
+                put(h.getHalf(), h.getFull());
+            }
+        }
+    };
+    private static Map<Character, Character> FullToHalfMap  = new HashMap<Character, Character>() {
+        {
+            for(Halfull h : halfullList) {
+                put(h.getFull(), h.getHalf());
+            }
+        }
+    };
+
+
     /**
      * 半角文字列を全角文字列に変換する．なお変換できない文字はそのまま出力する．
      * @param half 半角文字列
@@ -192,12 +210,7 @@ public class HalfullConverter {
      * @return 全角文字
      */
     public static char halfToFull(char half) {
-        for (Halfull h : halfullList) {
-            if (h.getHalf() == half) {
-                return h.getFull();
-            }
-        }
-        return half;
+        return HalfToFullMap.getOrDefault(half, half);
     }
 
     /**
@@ -206,12 +219,7 @@ public class HalfullConverter {
      * @return 半角文字
      */
     public static char fullToHalf(char full) {
-        for (Halfull h : halfullList) {
-            if (h.getFull() == full) {
-                return h.getHalf();
-            }
-        }
-        return full;
+        return FullToHalfMap.getOrDefault(full, full);
     }
 
     /**
@@ -220,10 +228,9 @@ public class HalfullConverter {
      * @return 全角文字
      */
     public static char halfToFullStrict(char half) {
-        for (Halfull h : halfullList) {
-            if (h.getHalf() == half) {
-                return h.getFull();
-            }
+        var t = HalfToFullMap.get(half);
+        if (t != null) {
+            return t;
         }
         throw new IllegalArgumentException("HalfToFullConverter :  変換できない文字です"+half);
     }
@@ -234,10 +241,9 @@ public class HalfullConverter {
      * @return 半角文字
      */
     public static char fullToHalfStrict(char full) {
-        for (Halfull h : halfullList) {
-            if (h.getFull() == full) {
-                return h.getHalf();
-            }
+        var t = FullToHalfMap.get(full);
+        if (t != null) {
+            return t;
         }
         throw new IllegalArgumentException("HalfToFullConverter :  変換できない文字です"+full);
     }
