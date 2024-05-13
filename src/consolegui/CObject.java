@@ -79,12 +79,19 @@ public class CObject {
         return this.IsVisible;
     }
 
+    /**
+     * コスチュームの存在を確認する
+     */
+    public boolean IsExistCostume(String CostumeName){
+        return this.CostumeList.containsKey(CostumeName);
+    }
+
     /// コンストラクター群
     /**
      * コンストラクター．初期のコスチュームを設定する．
      * @param CView 表示先
      * @param CostumeName コスチュームの名前
-     * @param CostumeData コスチュームのデータ
+     * @param CostumeData コスチュームのデータ ※コスチュームのデータは内部で変換されるため，データの完全性については非保証です
      * @param x x座標
      * @param y y座標
      * @param IsVisible 表示フラグ
@@ -101,7 +108,7 @@ public class CObject {
     /**
      * コンストラクター．初期のコスチュームを設定する．なお，コスチューム名は"Default"となる
      * @param CView 表示先
-     * @param CostumeData コスチュームのデータ
+     * @param CostumeData コスチュームのデータ ※コスチュームのデータは内部で変換されるため，データの完全性については非保証です
      * @param x x座標
      * @param y y座標
      * @param IsVisible 表示フラグ
@@ -113,19 +120,16 @@ public class CObject {
     /**
      * コスチュームを追加する
      * @param CostumeName コスチュームの名前
-     * @param SpriteData コスチュームのデータ
+     * @param SpriteData コスチュームのデータ ※コスチュームのデータは内部で変換されるため，データの完全性については非保証です
      */
     public void AddCostume(String CostumeName, ArrayList<ArrayList<DrawCell>> SpriteData){
         if(this.CostumeList.containsKey(CostumeName))throw new IllegalArgumentException(this.getClass().getName()+" : 既に存在するコスチューム名です");
-        // for(int i=0;i<SpriteData.size();i++){
-        //     for(int j=0;j<SpriteData.get(i).size();j++){
-        //         char w=SpriteData.get(i).get(j).word;
-        //         char W=HalfullConverter.halfToFull(w);
-        //         if(w!=W){
-        //             SpriteData.get(i).get(j).word=W;
-        //         }
-        //     }
-        // }
+        for(int i=0;i<SpriteData.size();i++){
+            for(int j=0;j<SpriteData.get(i).size();j++){
+                if(CView.getIsFullWord())SpriteData.get(i).get(j).word = HalfullConverter.halfToFull(SpriteData.get(i).get(j).word);
+                else SpriteData.get(i).get(j).word = HalfullConverter.fullToHalf(SpriteData.get(i).get(j).word);
+            }
+        }
         this.CostumeList.put(CostumeName, SpriteData);
         return;
     }
@@ -184,13 +188,13 @@ public class CObject {
      * モデルの描画順序を下げる
      */
     public void ChangeDrawingOrderDown(){
-        var t =this.CView.getObjectDrawingOrder(this)-1;
+        int t =this.CView.getObjectDrawingOrder(this)-1;
         if(t<0)t=0;
         this.CView.ChangeObjectDrawingOrder(this, t);
     }
     /**
      * モデルの描画順序を変更する
-     * @param order 描画順序
+     * @param order 描画順序 -1を指定すると最前面に，0を指定すると最背面になる
      */
     public void ChangeDrawingOrder(int order){
         this.CView.ChangeObjectDrawingOrder(this, order);
