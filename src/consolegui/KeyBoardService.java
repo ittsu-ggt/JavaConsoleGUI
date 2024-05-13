@@ -6,64 +6,71 @@
 package consolegui;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.Vector;
+import java.awt.RenderingHints.Key;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 /**
  * キーボード入力を取得するクラス
  */
-public class KeyBoardService extends Thread {
-    private int DelayTime;
-    private static Vector<Character> KeyInput = new Vector<Character>();
-    private static boolean IsRun = false;
-    private static KeyBoardService InputThread;
-    private static int BufferSize;
-    private static int threadnum = 0;
+public class KeyBoardService implements ActionListener {
+    private Timer timer;
+    private static final int DELEY = 50;
+    private static final int BUFFER =3;
+    private static Vector<Character> keyList = new Vector<Character>();
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private boolean fastmode = false;
+    // private static Scanner scanner = new Scanner(System.in);
 
-    public KeyBoardService(int BufferSize) {
-        if (!IsRun) {
-            IsRun = true;
-            KeyBoardService.BufferSize = BufferSize;
-            InputThread = new KeyBoardService(BufferSize);
-            InputThread.start();
-        } else if (threadnum > 1) {
-            throw new IllegalArgumentException("KeyBoardService : すでにインスタンスが生成されています");
-        }
+    public KeyBoardService(boolean fastmode) {
+        this.fastmode = fastmode;
+        timer = new Timer(DELEY, this);
+        timer.start();
+    }
+
+    public boolean isKeyPressed(char keyCode) {
+        return keyList.contains(keyCode);
     }
 
     public char GetKey() {
-        if (KeyInput.size() == 0) {
+        if (keyList.size() > 0) {
+            char key = keyList.get(0);
+            if(fastmode)keyList.clear();
+            else keyList.remove(0);
+            return key;
+        } else {
             return '\0';
         }
-        var t = KeyInput.get(0);
-        KeyInput.remove(0);
-        return t;
-        
     }
 
-    public void run() {
+    public void actionPerformed(ActionEvent e) {
         try {
-            if (threadnum == 0) {
-                BufferedReader Reader = new BufferedReader(new InputStreamReader(System.in));
-                String line = null;
-                while ((line = Reader.readLine()) != null) {
-                    for (int i = 0; i < line.length(); i++) {
-                        KeyInput.add(line.charAt(i));
-                        if (KeyInput.size() > BufferSize) {
-                            KeyInput.remove(0);
-                        }
-                    }
-                }
-            } else {
+            readkey();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
 
-            }
-        } catch (Exception e) {
+    public void readkey() throws IOException {
+        // keyList.clear();
 
+        String str = reader.readLine();
+        // String str = scanner.next();
+        keyList.clear();
+        for (int i = 0; i < str.length(); i++) {
+            keyList.add(str.charAt(i));
+            if(keyList.size() > BUFFER) keyList.remove(0);
         }
 
+    }
+    public int getsize(){
+        return keyList.size();
     }
 
 }
-
-
