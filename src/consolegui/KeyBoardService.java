@@ -11,27 +11,30 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Vector;
-import java.awt.RenderingHints.Key;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
 
 /**
  * キーボード入力を取得するクラス
  */
-public class KeyBoardService implements ActionListener {
-    private Timer timer;
-    private static final int DELEY = 50;
+public class KeyBoardService extends Thread {
+    // private Timer timer;
+    private KeyBoardService instance;
+    // private static final int DELEY = 50;
     private static final int BUFFER =3;
     private static Vector<Character> keyList = new Vector<Character>();
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private boolean fastmode = false;
+    private static boolean isRunning = false;
     // private static Scanner scanner = new Scanner(System.in);
 
     public KeyBoardService(boolean fastmode) {
+        if(isRunning)throw new RuntimeException("KeyBoardService is already running");
+        isRunning = true;
         this.fastmode = fastmode;
-        timer = new Timer(DELEY, this);
-        timer.start();
+        instance = new KeyBoardService();
+        instance.start();
+    }
+
+    private KeyBoardService() {
     }
 
     public boolean isKeyPressed(char keyCode) {
@@ -49,7 +52,7 @@ public class KeyBoardService implements ActionListener {
         }
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void run() {
         try {
             readkey();
         } catch (IOException ioException) {
@@ -58,16 +61,14 @@ public class KeyBoardService implements ActionListener {
     }
 
     public void readkey() throws IOException {
-        // keyList.clear();
-
-        String str = reader.readLine();
-        // String str = scanner.next();
-        keyList.clear();
-        for (int i = 0; i < str.length(); i++) {
-            keyList.add(str.charAt(i));
-            if(keyList.size() > BUFFER) keyList.remove(0);
+        String str = null;
+        while((str = reader.readLine())!=null){
+            keyList.clear();
+            for (int i = 0; i < str.length(); i++) {
+                keyList.add(str.charAt(i));
+                if(keyList.size() > BUFFER) keyList.remove(0);
+            }
         }
-
     }
     public int getsize(){
         return keyList.size();
