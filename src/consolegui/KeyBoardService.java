@@ -14,17 +14,19 @@ import java.util.Vector;
 
 /**
  * キーボード入力を取得するクラス
+ * メソッドは一つのみ生成可能である
  */
 public class KeyBoardService extends Thread {
-    // private Timer timer;
     private KeyBoardService instance;
-    // private static final int DELEY = 50;
     private static final int BUFFER =3;
     private static Vector<Character> keyList = new Vector<Character>();
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private boolean fastmode = false;
     private static boolean isRunning = false;
-    // private static Scanner scanner = new Scanner(System.in);
+    /**
+     * キーボード入力を取得するクラスのコンストラクタ
+     * @param fastmode trueの場合、キーボード入力を取得するたびにバッファをクリアするため，
+     */
 
     public KeyBoardService(boolean fastmode) {
         if(isRunning)throw new RuntimeException("KeyBoardService is already running");
@@ -34,13 +36,23 @@ public class KeyBoardService extends Thread {
         instance.start();
     }
 
+
     private KeyBoardService() {
     }
 
+    /**
+     * キーボード入力を判定する
+     * @param keyCode 入力されたキー
+     * @return 入力されたキーが押されているかどうか
+     */
     public boolean isKeyPressed(char keyCode) {
         return keyList.contains(keyCode);
     }
 
+    /**
+     * キーボード入力を取得する
+     * @return 入力されたキー
+     */
     public char GetKey() {
         if (keyList.size() > 0) {
             char key = keyList.get(0);
@@ -52,6 +64,9 @@ public class KeyBoardService extends Thread {
         }
     }
 
+    /**
+     * スレッド処理
+     */
     public void run() {
         try {
             readkey();
@@ -60,7 +75,10 @@ public class KeyBoardService extends Thread {
         }
     }
 
-    public void readkey() throws IOException {
+    /**
+     * キーボード入力を取得する
+     */
+    private void readkey() throws IOException {
         String str = null;
         while((str = reader.readLine())!=null){
             keyList.clear();
@@ -70,6 +88,11 @@ public class KeyBoardService extends Thread {
             }
         }
     }
+
+    /**
+     * バッファのサイズを取得する
+     * @return バッファのサイズ
+     */
     public int getsize(){
         return keyList.size();
     }
