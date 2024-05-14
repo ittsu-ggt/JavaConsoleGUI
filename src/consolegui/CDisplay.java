@@ -5,9 +5,7 @@
  */
 package consolegui;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +19,7 @@ public class CDisplay {
     private int Height; // 高さ
     private LinkedList<CObject> ObjectsList; // 描画オブジェクトリスト
     private boolean IsFullWord; // 全角文字で使用するか
+    private boolean Istransparent; // 透過処理を行うか
     /**
      * デフォルトの文字色．本クラスはスプライトの色指定が0の場合はこの設定を優先します
      */
@@ -48,6 +47,7 @@ public class CDisplay {
      * 各描画オブジェクトから描画情報を取得し、描画メモリに反映
      */
     private void ViewDataImport() {
+        int wc,bg;
         for (CObject obj : ObjectsList) {
             if (obj.IsVisible) {
                 ArrayList<ArrayList<DrawCell>> Model = obj.GetCostumeData();
@@ -55,7 +55,16 @@ public class CDisplay {
                     for (int j = 0; j < Model.get(i).size(); j++) {
                         if (obj.getX() + j >= CameraX && obj.getX() + j < CameraX + Width && obj.getY() + i >= CameraY
                                 && obj.getY() + i < CameraY + Height) {
-                            Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] = Model.get(i).get(j);
+                                    DrawCell t= Model.get(i).get(j);
+                                    wc = t.wordColor;
+                                    bg = t.bgColor;
+                                    if(Istransparent){
+                                        if(Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] !=null){
+                                            if(wc == 0 )wc = Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX].wordColor;
+                                            if(bg == 0 )bg = Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX].bgColor;
+                                        }
+                                    }
+                                    Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] = new DrawCell(t.word,wc,bg);
                         }
                     }
                 }
@@ -103,18 +112,22 @@ public class CDisplay {
      * @param defaultWordColor デフォルトの文字色
      * @param defaultBackGroundColor デフォルトの背景色
      * @param isFullWord 全角文字で使用するか．この設定を有効にすると，全角文字を使用する場合には半角文字2文字分の幅を使用します
+     * @param istransparent 透過処理を行うかを指定します．色を0に指定した場合，一つ下のモデルの描画情報を参照します．
      */
-    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord) {
+    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord,boolean istransparent) {
         this.Width = width;
         this.Height = height;
         this.defaultWordColor = defaultWordColor;
         this.defaultBackGroundColor = defaultBackGroundColor;
         this.IsFullWord = isFullWord;
+        this.Istransparent = istransparent;
         Screen = new DrawCell[Height][Width];
         ObjectsList = new LinkedList<CObject>();
         System.out.print("\033[?25l"); // カーソル非表示
         // System.out.print("\f"); // 画面クリア
+
         System.out.print("\033[H\033[2J"); // 画面クリア
+        System.out.println();
         System.out.println();
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {

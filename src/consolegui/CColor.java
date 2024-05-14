@@ -5,7 +5,8 @@ import java.util.Map;
 
 public class CColor {
     /**
-     * 色をデフォルトにします．デフォルトは使用する側の設定に従うことを要請しています
+     * 色をデフォルトにします．デフォルトは使用する側の設定に従うことを要請しています.
+     * CDisplayでは0を指定し，透過処理を有効化した際には，一つ下のレイヤーにある色を使用します．
      */
     public static final int DEFAULT = 0;
     public static final int BLACK = 1;
