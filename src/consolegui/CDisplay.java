@@ -68,7 +68,7 @@ public class CDisplay {
      */
     private void PrintDisplay() {
         StringBuffer Display = new StringBuffer();
-        Display.append("\033[H\033[2J"); // 画面クリア
+        // Display.append("\033[H\033[2J"); // 画面クリア
 
         // Display.append("\f"); // 画面クリア
         for (int j = 0; j < Height; j++) {
@@ -89,8 +89,8 @@ public class CDisplay {
             Display.append("\u001B[0m"); // 色のリセット
             Display.append("\n"); // 改行
         }
-        // Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
-        // Display.append("\033[" + Height + "A"); // カーソルの位置を画面の幅分戻す
+        Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
+        Display.append("\033[" + Height + "A"); // カーソルの位置を画面の幅分戻す
         System.out.flush();
         System.out.print(Display);
     }
@@ -113,7 +113,9 @@ public class CDisplay {
         Screen = new DrawCell[Height][Width];
         ObjectsList = new LinkedList<CObject>();
         System.out.print("\033[?25l"); // カーソル非表示
-        System.out.print("\f"); // カーソル非表示
+        // System.out.print("\f"); // 画面クリア
+        System.out.print("\033[H\033[2J"); // 画面クリア
+        System.out.println();
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {
                     System.out.println("\033[?25h");
