@@ -117,6 +117,7 @@ public class HalfullConverter {
             add(new Halfull('=', '＝'));
             add(new Halfull('>', '＞'));
             add(new Halfull('?', '？'));
+            // add(new Halfull('^', '∧'));
             add(new Halfull('@', '＠'));
             add(new Halfull('[', '［'));
             add(new Halfull('\\', '￥'));
