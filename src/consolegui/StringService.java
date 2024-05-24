@@ -55,16 +55,16 @@ public class StringService extends CObject {
 
 
     private void reflection() {
-        if (!this.IsExistCostume(str)) {
+        if (!this.IsExistCostume(str+SpriteColor+BackGroundColor)) {
             ArrayList<Character> tmp = new ArrayList<Character>();
             for (int i = 0; i < str.length(); i++) {
                 tmp.add(str.charAt(i));
             }
             ArrayList<ArrayList<Character>> tmp2 = new ArrayList<ArrayList<Character>>();
             tmp2.add(tmp);
-            this.AddCostume(str, SpriteBuildService.BuildModel(tmp2, SpriteColor, BackGroundColor));
+            this.AddCostume(str+SpriteColor+BackGroundColor, SpriteBuildService.BuildModel(tmp2, SpriteColor, BackGroundColor));
         }
-        this.SwitchCostume(str);
+        this.SwitchCostume(str+SpriteColor+BackGroundColor);
         return;
     }
 
