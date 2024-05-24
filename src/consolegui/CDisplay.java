@@ -6,6 +6,7 @@
 package consolegui;
 
 import java.util.LinkedList;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -80,6 +81,8 @@ public class CDisplay {
         // Display.append("\033[H\033[2J"); // 画面クリア
 
         // Display.append("\f"); // 画面クリア
+        Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
+        Display.append("\033[" + (Height) + "A"); // カーソルの位置を画面の高さ分戻す
         for (int j = 0; j < Height; j++) {
             int bg = -1, wc = -1;
             for (int i = 0; i < Width; i++) {
@@ -98,8 +101,9 @@ public class CDisplay {
             Display.append("\u001B[0m"); // 色のリセット
             Display.append("\n"); // 改行
         }
-        Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
-        Display.append("\033[" + Height + "A"); // カーソルの位置を画面の幅分戻す
+        // Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
+        // Display.append("\033[" + (Height+1) + "A"); // カーソルの位置を画面の高さ分戻す
+        
         System.out.flush();
         System.out.print(Display);
     }
@@ -114,7 +118,7 @@ public class CDisplay {
      * @param isFullWord 全角文字で使用するか．この設定を有効にすると，全角文字を使用する場合には半角文字2文字分の幅を使用します
      * @param istransparent 透過処理を行うかを指定します．色を0に指定した場合，一つ下のモデルの描画情報を参照します．
      */
-    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord,boolean istransparent) {
+    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord,boolean istransparent) throws IOException, InterruptedException{
         this.Width = width;
         this.Height = height;
         this.defaultWordColor = defaultWordColor;
@@ -125,10 +129,11 @@ public class CDisplay {
         ObjectsList = new LinkedList<CObject>();
         System.out.print("\033[?25l"); // カーソル非表示
         // System.out.print("\f"); // 画面クリア
-
         System.out.print("\033[H\033[2J"); // 画面クリア
-        System.out.println();
-        System.out.println();
+        for(int i=0;i<height;i++){
+            System.out.println();
+        }
+
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {
                     System.out.println("\033[?25h");
