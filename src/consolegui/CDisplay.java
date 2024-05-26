@@ -6,6 +6,9 @@
 package consolegui;
 
 import java.util.LinkedList;
+
+import javax.management.RuntimeErrorException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,7 +22,7 @@ public class CDisplay {
     private int Width; // 幅
     private int Height; // 高さ
     private LinkedList<CObject> ObjectsList; // 描画オブジェクトリスト
-    private boolean IsFullWord; // 全角文字で使用するか
+    private char EmptyWord; // 全角文字で使用するか
     private boolean Istransparent; // 透過処理を行うか
     /**
      * デフォルトの文字色．本クラスはスプライトの色指定が0の場合はこの設定を優先します
@@ -38,8 +41,7 @@ public class CDisplay {
     private void Clear() {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
-                if(IsFullWord) Screen[j][i] = new DrawCell('　', defaultWordColor, defaultBackGroundColor);
-                else Screen[j][i] = new DrawCell(' ', defaultWordColor, defaultBackGroundColor);
+                Screen[j][i] = new DrawCell(EmptyWord, defaultWordColor, defaultBackGroundColor);
             }
         }
     }
@@ -55,7 +57,7 @@ public class CDisplay {
                 for (int i = 0; i < Model.size(); i++) {
                     for (int j = 0; j < Model.get(i).size(); j++) {
                         if (obj.getX() + j >= CameraX && obj.getX() + j < CameraX + Width && obj.getY() + i >= CameraY
-                                && obj.getY() + i < CameraY + Height) {
+                                && obj.getY() + i < CameraY + Height && Model.get(i).get(j).word != EmptyWord){
                                     DrawCell t= Model.get(i).get(j);
                                     wc = t.wordColor;
                                     bg = t.bgColor;
@@ -118,28 +120,34 @@ public class CDisplay {
      * @param isFullWord 全角文字で使用するか．この設定を有効にすると，全角文字を使用する場合には半角文字2文字分の幅を使用します
      * @param istransparent 透過処理を行うかを指定します．色を0に指定した場合，一つ下のモデルの描画情報を参照します．
      */
-    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord,boolean istransparent) throws IOException, InterruptedException{
-        this.Width = width;
-        this.Height = height;
-        this.defaultWordColor = defaultWordColor;
-        this.defaultBackGroundColor = defaultBackGroundColor;
-        this.IsFullWord = isFullWord;
-        this.Istransparent = istransparent;
-        Screen = new DrawCell[Height][Width];
-        ObjectsList = new LinkedList<CObject>();
-        System.out.print("\033[?25l"); // カーソル非表示
-        // System.out.print("\f"); // 画面クリア
-        System.out.print("\033[H\033[2J"); // 画面クリア
-        for(int i=0;i<height;i++){
-            System.out.println();
-        }
+    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord,boolean istransparent){
+        try{
+            this.Width = width;
+            this.Height = height;
+            this.defaultWordColor = defaultWordColor;
+            this.defaultBackGroundColor = defaultBackGroundColor;
+            this.Istransparent = istransparent;
+            if(isFullWord)EmptyWord='　';
+            else EmptyWord=' ';
+            Screen = new DrawCell[Height][Width];
+            ObjectsList = new LinkedList<CObject>();
+            System.out.print("\033[?25l"); // カーソル非表示
+            // System.out.print("\f"); // 画面クリア
+            System.out.print("\033[H\033[2J"); // 画面クリア
+            for(int i=0;i<height;i++){
+                System.out.println();
+            }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(
-                () -> {
-                    System.out.println("\033[?25h");
-                    System.out.print("\u001B[0m"); // 色のリセット
-                    System.out.print("\033[H\033[2J"); // 画面クリア
-                }));// シャットダウンフックの登録
+            Runtime.getRuntime().addShutdownHook(new Thread(
+                    () -> {
+                        System.out.println("\033[?25h");
+                        System.out.print("\u001B[0m"); // 色のリセット
+                        System.out.print("\033[H\033[2J"); // 画面クリア
+                    }));// シャットダウンフックの登録
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(this.getClass().getName() + " : 画面の初期化に失敗しました");
+        }
     }
 
     /**
@@ -148,8 +156,8 @@ public class CDisplay {
      * @param width  画面の幅
      * @param height 画面の高さ
      */
-    public CDisplay(int width, int height) {
-        this(width, height, 0,0,false);
+    public CDisplay(int width, int height){ 
+        this(width, height, 0,0,false,false);
     }
 
     /**
@@ -236,6 +244,41 @@ public class CDisplay {
     }
 
     /**
+     * ディスプレイのカメラを移動
+     * @param x x座標
+     * @param y y座標
+     */
+    public void MoveLocation(int x, int y) {
+        SetLocation(CameraX + x, CameraY + y);
+    }
+
+    /**
+     * ディスプレイのカメラを移動
+     * @param x x座標
+     * @param y y座標
+     */
+    public void SetLocation(int x, int y) {
+        CameraX = x;
+        CameraY = y;
+    }
+    
+    /**
+     * カメラのx座標を取得
+     * @return x座標
+     */
+    public int getCameraX() {
+        return CameraX;
+    }
+
+    /**
+     * カメラのy座標を取得
+     * @return y座標
+     */
+    public int getCameraY() {
+        return CameraY;
+    }
+
+    /**
      * 画面の更新を受け付ける
      */
     public void Update() {
@@ -265,7 +308,7 @@ public class CDisplay {
      * 全角文字を使用するかの問い合わせ
      */
     public boolean getIsFullWord(){
-        return IsFullWord;
+        return EmptyWord=='　';
     }
 
 }
