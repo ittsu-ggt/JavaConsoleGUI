@@ -98,10 +98,10 @@ public class CObject {
      */
     public CObject(CDisplay CView, String CostumeName, ArrayList<ArrayList<DrawCell>> CostumeData,int x,int y,boolean IsVisible) {
         this.CostumeList = new HashMap<String, ArrayList<ArrayList<DrawCell>>>();
-        AddCostume(CostumeName, CostumeData);
         this.CView = CView;
         this.CostumeName = CostumeName;
         this.IsVisible = IsVisible;
+        AddCostume(CostumeName, CostumeData);
         this.SetLocation(x, y);
         CView.AddObject(this);
     }
@@ -227,6 +227,7 @@ public class CObject {
     public boolean IsHit(CObject other){
         int TmpX = 0;
         int TmpY = 0;
+        char EmptyWord = this.CView.getIsFullWord() ? '　' : ' ';
         for (int i = 0; i < this.CostumeList.get(this.CostumeName).size(); i++) {
             for (int j = 0; j < this.CostumeList.get(this.CostumeName).get(i).size(); j++) {
                 TmpX = this.X + j;
@@ -234,8 +235,8 @@ public class CObject {
                 if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().get(0).size() && 
                     TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
                 {
-                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word != ' ' && 
-                        other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word != ' ')
+                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word != EmptyWord && 
+                        other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word != EmptyWord)
                     {
                         return true;
                     }
@@ -247,20 +248,49 @@ public class CObject {
     /**
      * 他のモデルと指定した文字で衝突しているかを判定する
      * @param other 衝突判定を行うモデル
-     * @param Word 衝突判定を行う文字
+     * @param otherWord 衝突判定を行う文字
      * @return 衝突しているかどうか
      */
-    public boolean IsHit(CObject other,char Word)
+    public boolean IsHit(CObject other,char otherWord)
     {
         int TmpX = 0;
         int TmpY = 0;
+        char EmptyWord = this.CView.getIsFullWord() ? '　' : ' ';
         for (int i = 0; i < this.CostumeList.get(this.CostumeName).size(); i++) {
             for (int j = 0; j < this.CostumeList.get(this.CostumeName).get(i).size(); j++) {
                 TmpX = this.X + j;
                 TmpY = this.Y + i;
                 if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
                 {
-                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word == Word && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word != ' ')
+                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word !=EmptyWord && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word ==otherWord)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 他のモデルと指定した文字で衝突しているかを判定する
+     * @param other 衝突判定を行うモデル
+     * @param otherWord 相手側の衝突判定を行う文字
+     * @param thisWord こちら側の衝突判定を行う文字
+     * @return 衝突しているかどうか
+     */
+    public boolean IsHit(CObject other,char otherWord,char thisWord)
+    {
+        int TmpX = 0;
+        int TmpY = 0;
+        char EmptyWord = this.CView.getIsFullWord() ? '　' : ' ';
+        for (int i = 0; i < this.CostumeList.get(this.CostumeName).size(); i++) {
+            for (int j = 0; j < this.CostumeList.get(this.CostumeName).get(i).size(); j++) {
+                TmpX = this.X + j;
+                TmpY = this.Y + i;
+                if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
+                {
+                    if(this.CostumeList.get(this.CostumeName).get(i).get(j).word ==thisWord && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word ==otherWord)
                     {
                         return true;
                     }
