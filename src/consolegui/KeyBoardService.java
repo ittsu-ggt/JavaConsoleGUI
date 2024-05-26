@@ -46,7 +46,13 @@ public class KeyBoardService extends Thread {
      * @return 入力されたキーが押されているかどうか
      */
     public boolean isKeyPressed(char keyCode) {
-        return keyList.contains(keyCode);
+        boolean result = keyList.contains(keyCode);
+        if(result)
+        {
+            if(fastmode)keyList.clear();
+            else keyList.remove(0);
+        }
+        return result;
     }
 
     /**
