@@ -260,7 +260,7 @@ public class CObject {
             for (int j = 0; j < this.CostumeList.get(this.CostumeName).get(i).size(); j++) {
                 TmpX = this.X + j;
                 TmpY = this.Y + i;
-                if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
+                if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().get(0).size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
                 {
                     if(this.CostumeList.get(this.CostumeName).get(i).get(j).word !=EmptyWord && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word ==otherWord)
                     {
@@ -288,7 +288,7 @@ public class CObject {
             for (int j = 0; j < this.CostumeList.get(this.CostumeName).get(i).size(); j++) {
                 TmpX = this.X + j;
                 TmpY = this.Y + i;
-                if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
+                if(TmpX >= other.getX() && TmpX < other.getX() + other.GetCostumeData().get(0).size() && TmpY >= other.getY() && TmpY < other.getY() + other.GetCostumeData().size())
                 {
                     if(this.CostumeList.get(this.CostumeName).get(i).get(j).word ==thisWord && other.GetCostumeData().get(TmpY - other.getY()).get(TmpX - other.getX()).word ==otherWord)
                     {
