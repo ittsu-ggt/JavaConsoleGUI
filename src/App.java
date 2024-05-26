@@ -1,4 +1,4 @@
-import java.util.Vector;
+
 import consolegui.*;
 
 public class App {
@@ -40,10 +40,10 @@ public class App {
     //     obj.RemoveMe();
     // }
     public static void main(String[] args) throws Exception {
-    CDisplay view = new CDisplay(20, 10);
+    CDisplay view = new CDisplay(20, 10, 0, 0, false, false);
     StringService service = new StringService(view, "Hello, World!",10,5,2,8,true);
     StringService service2 = new StringService(view, "Hello, World!",10,4,2,8,true);
-    for(int i=0x1F300;i<65500;i++){
+    for(int i=0x10;i<65500;i++){
         String num =i+"";
         String hex = Integer.toHexString(i);
         service2.ChangeString(hex);
