@@ -21,11 +21,13 @@ public class DrawCell {
      * 背景色
      */
     public int bgColor;
+
     /**
      * コンストラクター
-     * @param w 文字  
+     * 
+     * @param w   文字
      * @param bgc 背景色
-     * @param wc 文字色
+     * @param wc  文字色
      */
     public DrawCell(char w, int wc, int bgc) {
         this.word = w;

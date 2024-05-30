@@ -4,6 +4,7 @@
  * @version 1.0.0
  */
 package consolegui;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +32,7 @@ public class HalfullConverter {
         }
     }
 
-    private static ArrayList<Halfull> halfullList = new ArrayList<Halfull>()
-    {
+    private static ArrayList<Halfull> halfullList = new ArrayList<Halfull>() {
         {
             add(new Halfull('0', '０'));
             add(new Halfull('1', '１'));
@@ -133,24 +133,24 @@ public class HalfullConverter {
         }
     };
 
-    private static Map<Character, Character> HalfToFullMap  = new HashMap<Character, Character>() {
+    private static Map<Character, Character> HalfToFullMap = new HashMap<Character, Character>() {
         {
-            for(Halfull h : halfullList) {
+            for (Halfull h : halfullList) {
                 put(h.getHalf(), h.getFull());
             }
         }
     };
-    private static Map<Character, Character> FullToHalfMap  = new HashMap<Character, Character>() {
+    private static Map<Character, Character> FullToHalfMap = new HashMap<Character, Character>() {
         {
-            for(Halfull h : halfullList) {
+            for (Halfull h : halfullList) {
                 put(h.getFull(), h.getHalf());
             }
         }
     };
 
-
     /**
      * 半角文字列を全角文字列に変換する．なお変換できない文字はそのまま出力する．
+     * 
      * @param half 半角文字列
      * @return 全角文字列
      */
@@ -165,6 +165,7 @@ public class HalfullConverter {
 
     /**
      * 全角文字列を半角文字列に変換する．なお変換できない文字はそのまま出力する．
+     * 
      * @param full 全角文字列
      * @return 半角文字列
      */
@@ -173,12 +174,13 @@ public class HalfullConverter {
         for (int i = 0; i < full.length(); i++) {
             char c = full.charAt(i);
             half.append(fullToHalf(c));
-            }
+        }
         return half.toString();
     }
 
     /**
      * 半角文字列を全角文字列に変換する．なお変換できない文字が含まれている場合は例外を投げる．
+     * 
      * @param half 半角文字列
      * @return 全角文字列
      */
@@ -193,6 +195,7 @@ public class HalfullConverter {
 
     /**
      * 全角文字列を半角文字列に変換する．なお変換できない文字が含まれている場合は例外を投げる．
+     * 
      * @param full 全角文字列
      * @return 半角文字列
      */
@@ -207,6 +210,7 @@ public class HalfullConverter {
 
     /**
      * 半角文字を全角文字に変換する
+     * 
      * @param half 半角文字
      * @return 全角文字
      */
@@ -216,6 +220,7 @@ public class HalfullConverter {
 
     /**
      * 全角文字を半角文字に変換する
+     * 
      * @param full 全角文字
      * @return 半角文字
      */
@@ -225,6 +230,7 @@ public class HalfullConverter {
 
     /**
      * 半角文字を全角文字に変換する．変換できない文字が含まれている場合は例外を投げる．
+     * 
      * @param half 半角文字
      * @return 全角文字
      */
@@ -233,11 +239,12 @@ public class HalfullConverter {
         if (t != null) {
             return t;
         }
-        throw new IllegalArgumentException("HalfToFullConverter :  変換できない文字です"+half);
+        throw new IllegalArgumentException("HalfToFullConverter :  変換できない文字です" + half);
     }
 
     /**
      * 全角文字を半角文字に変換する．変換できない文字が含まれている場合は例外を投げる．
+     * 
      * @param full 全角文字
      * @return 半角文字
      */
@@ -246,6 +253,6 @@ public class HalfullConverter {
         if (t != null) {
             return t;
         }
-        throw new IllegalArgumentException("HalfToFullConverter :  変換できない文字です"+full);
+        throw new IllegalArgumentException("HalfToFullConverter :  変換できない文字です" + full);
     }
 }

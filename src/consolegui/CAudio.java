@@ -5,8 +5,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
-
-public class CAudio{
+public class CAudio {
     public void playSound(String soundFile) {
         try {
             File file = new File(soundFile);

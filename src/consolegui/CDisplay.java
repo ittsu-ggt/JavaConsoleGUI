@@ -27,13 +27,11 @@ public class CDisplay {
     /**
      * デフォルトの文字色．本クラスはスプライトの色指定が0の場合はこの設定を優先します
      */
-    public int defaultWordColor ; 
+    public int defaultWordColor;
     /**
      * デフォルトの文字色．本クラスはスプライトの色指定が0の場合はこの設定を優先します
      */
-    public int defaultBackGroundColor ; 
-
-    
+    public int defaultBackGroundColor;
 
     /**
      * 描画メモリのクリア
@@ -50,24 +48,26 @@ public class CDisplay {
      * 各描画オブジェクトから描画情報を取得し、描画メモリに反映
      */
     private void ViewDataImport() {
-        int wc,bg;
+        int wc, bg;
         for (CObject obj : ObjectsList) {
             if (obj.IsVisible) {
                 ArrayList<ArrayList<DrawCell>> Model = obj.GetCostumeData();
                 for (int i = 0; i < Model.size(); i++) {
                     for (int j = 0; j < Model.get(i).size(); j++) {
                         if (obj.getX() + j >= CameraX && obj.getX() + j < CameraX + Width && obj.getY() + i >= CameraY
-                                && obj.getY() + i < CameraY + Height && Model.get(i).get(j).word != EmptyWord){
-                                    DrawCell t= Model.get(i).get(j);
-                                    wc = t.wordColor;
-                                    bg = t.bgColor;
-                                    if(Istransparent){
-                                        if(Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] !=null){
-                                            if(wc == 0 )wc = Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX].wordColor;
-                                            if(bg == 0 )bg = Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX].bgColor;
-                                        }
-                                    }
-                                    Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] = new DrawCell(t.word,wc,bg);
+                                && obj.getY() + i < CameraY + Height && Model.get(i).get(j).word != EmptyWord) {
+                            DrawCell t = Model.get(i).get(j);
+                            wc = t.wordColor;
+                            bg = t.bgColor;
+                            if (Istransparent) {
+                                if (Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] != null) {
+                                    if (wc == 0)
+                                        wc = Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX].wordColor;
+                                    if (bg == 0)
+                                        bg = Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX].bgColor;
+                                }
+                            }
+                            Screen[obj.getY() + i - CameraY][obj.getX() + j - CameraX] = new DrawCell(t.word, wc, bg);
                         }
                     }
                 }
@@ -96,7 +96,7 @@ public class CDisplay {
                 if (wc != Screen[j][i].wordColor) {
                     wc = Screen[j][i].wordColor;
                     Display.append(CColor.getWordColor(wc));
-                    
+
                 }
                 Display.append(Screen[j][i].word);
             }
@@ -105,7 +105,7 @@ public class CDisplay {
         }
         // Display.append("\033[" + Width + "D"); // カーソルの位置を画面の幅分戻す
         // Display.append("\033[" + (Height+1) + "A"); // カーソルの位置を画面の高さ分戻す
-        
+
         System.out.flush();
         System.out.print(Display);
     }
@@ -113,28 +113,31 @@ public class CDisplay {
     /**
      * コンストラクター
      * 
-     * @param width  画面の幅
-     * @param height 画面の高さ
-     * @param defaultWordColor デフォルトの文字色
+     * @param width                  画面の幅
+     * @param height                 画面の高さ
+     * @param defaultWordColor       デフォルトの文字色
      * @param defaultBackGroundColor デフォルトの背景色
-     * @param isFullWord 全角文字で使用するか．この設定を有効にすると，全角文字を使用する場合には半角文字2文字分の幅を使用します
-     * @param istransparent 透過処理を行うかを指定します．色を0に指定した場合，一つ下のモデルの描画情報を参照します．
+     * @param isFullWord             全角文字で使用するか．この設定を有効にすると，全角文字を使用する場合には半角文字2文字分の幅を使用します
+     * @param istransparent          透過処理を行うかを指定します．色を0に指定した場合，一つ下のモデルの描画情報を参照します．
      */
-    public CDisplay(int width, int height,int defaultWordColor,int defaultBackGroundColor,boolean isFullWord,boolean istransparent){
-        try{
+    public CDisplay(int width, int height, int defaultWordColor, int defaultBackGroundColor, boolean isFullWord,
+            boolean istransparent) {
+        try {
             this.Width = width;
             this.Height = height;
             this.defaultWordColor = defaultWordColor;
             this.defaultBackGroundColor = defaultBackGroundColor;
             this.Istransparent = istransparent;
-            if(isFullWord)EmptyWord='　';
-            else EmptyWord=' ';
+            if (isFullWord)
+                EmptyWord = '　';
+            else
+                EmptyWord = ' ';
             Screen = new DrawCell[Height][Width];
             ObjectsList = new LinkedList<CObject>();
             System.out.print("\033[?25l"); // カーソル非表示
             // System.out.print("\f"); // 画面クリア
             System.out.print("\033[H\033[2J"); // 画面クリア
-            for(int i=0;i<height;i++){
+            for (int i = 0; i < height; i++) {
                 System.out.println();
             }
 
@@ -144,7 +147,7 @@ public class CDisplay {
                         System.out.print("\u001B[0m"); // 色のリセット
                         System.out.print("\033[H\033[2J"); // 画面クリア
                     }));// シャットダウンフックの登録
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(this.getClass().getName() + " : 画面の初期化に失敗しました");
         }
@@ -156,8 +159,8 @@ public class CDisplay {
      * @param width  画面の幅
      * @param height 画面の高さ
      */
-    public CDisplay(int width, int height){ 
-        this(width, height, 0,0,false,false);
+    public CDisplay(int width, int height) {
+        this(width, height, 0, 0, false, false);
     }
 
     /**
@@ -213,7 +216,7 @@ public class CDisplay {
                 AddObject(obj, 0);
             else if (order >= ObjectsList.size() || order == -1)
                 AddObject(obj);
-            else if(order > 0)
+            else if (order > 0)
                 AddObject(obj, order);
             else
                 throw new IllegalArgumentException(this.getClass().getName() + " : 不正な描画順序です");
@@ -245,6 +248,7 @@ public class CDisplay {
 
     /**
      * ディスプレイのカメラを移動
+     * 
      * @param x x座標
      * @param y y座標
      */
@@ -254,6 +258,7 @@ public class CDisplay {
 
     /**
      * ディスプレイのカメラを移動
+     * 
      * @param x x座標
      * @param y y座標
      */
@@ -261,9 +266,10 @@ public class CDisplay {
         CameraX = x;
         CameraY = y;
     }
-    
+
     /**
      * カメラのx座標を取得
+     * 
      * @return x座標
      */
     public int getCameraX() {
@@ -272,6 +278,7 @@ public class CDisplay {
 
     /**
      * カメラのy座標を取得
+     * 
      * @return y座標
      */
     public int getCameraY() {
@@ -304,11 +311,12 @@ public class CDisplay {
     public int getHeight() {
         return Height;
     }
+
     /**
      * 全角文字を使用するかの問い合わせ
      */
-    public boolean getIsFullWord(){
-        return EmptyWord=='　';
+    public boolean getIsFullWord() {
+        return EmptyWord == '　';
     }
 
 }

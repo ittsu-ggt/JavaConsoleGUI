@@ -41,7 +41,7 @@ public class SpriteBuildService {
      * @return 構築済みスプライト
      */
     public static ArrayList<ArrayList<DrawCell>> BuildModel(List<? extends List<Character>> SpriteData,
-                List<? extends List<Integer>> SpriteColor, List<? extends List<Integer>> BackGroundColor) {
+            List<? extends List<Integer>> SpriteColor, List<? extends List<Integer>> BackGroundColor) {
         // 引数のサイズチェック
         if (SpriteData.size() != BackGroundColor.size() || SpriteData.size() != SpriteColor.size()) {
             throw new IllegalArgumentException(
@@ -65,10 +65,8 @@ public class SpriteBuildService {
             Cell_tmp.add(row);
         }
         int l = Cell_tmp.get(0).size();
-        for(int i=0;i<Cell_tmp.size();i++)
-        {
-            if(l!=Cell_tmp.get(i).size())
-            {
+        for (int i = 0; i < Cell_tmp.size(); i++) {
+            if (l != Cell_tmp.get(i).size()) {
                 throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : スプライトデータの各行のサイズが一致しません");
             }
         }
@@ -84,7 +82,8 @@ public class SpriteBuildService {
      * @param SpriteColor     文字色番号
      * @return 構築済みスプライト
      */
-    public static ArrayList<ArrayList<DrawCell>> BuildModel(List<? extends List<Character>> SpriteData,int SpriteColor, int BackGroundColor) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(List<? extends List<Character>> SpriteData, int SpriteColor,
+            int BackGroundColor) {
         ArrayList<ArrayList<Integer>> BackGroundColor_tmp = new ArrayList<ArrayList<Integer>>();
         ArrayList<ArrayList<Integer>> SpriteColor_tmp = new ArrayList<ArrayList<Integer>>();
         for (int i = 0; i < SpriteData.size(); i++) {
@@ -123,7 +122,7 @@ public class SpriteBuildService {
         }
         return tmp;
     }
-    
+
     private static List<String> FileReader(String FilePath) {
         Path File_Path = Path.of(FilePath);
         try {
@@ -132,48 +131,57 @@ public class SpriteBuildService {
             return lines;
         } catch (IOException e) {
             e.printStackTrace();
-            Path tmp=File_Path.toAbsolutePath();
-            throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : ファイルの読み込みに失敗しました．ファイル名 : "+tmp.toString());
+            Path tmp = File_Path.toAbsolutePath();
+            throw new IllegalArgumentException(
+                    SpriteBuildService.class.getName() + " : ファイルの読み込みに失敗しました．ファイル名 : " + tmp.toString());
         }
     }
 
     /**
      * ファイルからスプライトを構築する．ここで入れるファイルは，スプライトデータ，文字色，背景色の順に行で並んでいること
+     * 
      * @param AllSpriteFilePath スプライトデータ・文字色・背景色ファイル
      * @return 構築済みスプライト
      */
     public static ArrayList<ArrayList<DrawCell>> BuildModel(String AllSpriteFilePath) {
         List<String> lines = FileReader(AllSpriteFilePath);
-        if(lines.size()%3!=0)
-        {
-            throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : ファイルの内容が不正です．ファイル名 : "+AllSpriteFilePath);
+        if (lines.size() % 3 != 0) {
+            throw new IllegalArgumentException(
+                    SpriteBuildService.class.getName() + " : ファイルの内容が不正です．ファイル名 : " + AllSpriteFilePath);
         }
-        ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(lines.subList(0, lines.size()/3));
-        ArrayList<ArrayList<Integer>> SpriteColor = LineConverterToInteger(lines.subList(lines.size()/3, lines.size()/3*2));
-        ArrayList<ArrayList<Integer>> BackGroundColor = LineConverterToInteger(lines.subList(lines.size()/3*2, lines.size()));
+        ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(lines.subList(0, lines.size() / 3));
+        ArrayList<ArrayList<Integer>> SpriteColor = LineConverterToInteger(
+                lines.subList(lines.size() / 3, lines.size() / 3 * 2));
+        ArrayList<ArrayList<Integer>> BackGroundColor = LineConverterToInteger(
+                lines.subList(lines.size() / 3 * 2, lines.size()));
         return BuildModel(SpriteData, SpriteColor, BackGroundColor);
     }
 
     /**
      * ファイルからスプライトを構築する．
-     * @param SpriteFilePath スプライトデータファイル
-     * @param SpriteColor 文字色
+     * 
+     * @param SpriteFilePath  スプライトデータファイル
+     * @param SpriteColor     文字色
      * @param BackGroundColor 背景色
      * @return 構築済みスプライト
      */
-    public static ArrayList<ArrayList<DrawCell>> BuildModel(String SpriteFilePath,int SpriteColor, int BackGroundColor) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(String SpriteFilePath, int SpriteColor,
+            int BackGroundColor) {
         List<String> lines = FileReader(SpriteFilePath);
         ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(lines);
-        return BuildModel(SpriteData,SpriteColor, BackGroundColor);
+        return BuildModel(SpriteData, SpriteColor, BackGroundColor);
     }
+
     /**
      * ファイルからスプライトを構築する．
-     * @param SpriteFilePath スプライトデータファイル
-     * @param SpriteColorFilePath 文字色ファイル
+     * 
+     * @param SpriteFilePath          スプライトデータファイル
+     * @param SpriteColorFilePath     文字色ファイル
      * @param BackGroundColorFilePath 背景色ファイル
      * @return 構築済みスプライト
      */
-    public static ArrayList<ArrayList<DrawCell>> BuildModel(String SpriteFilePath, String SpriteColorFilePath,String BackGroundColorFilePath) {
+    public static ArrayList<ArrayList<DrawCell>> BuildModel(String SpriteFilePath, String SpriteColorFilePath,
+            String BackGroundColorFilePath) {
         ArrayList<ArrayList<Character>> SpriteData = LineConverterToCharacter(FileReader(SpriteFilePath));
         ArrayList<ArrayList<Integer>> SpriteColor = LineConverterToInteger(FileReader(SpriteColorFilePath));
         ArrayList<ArrayList<Integer>> BackGroundColor = LineConverterToInteger(FileReader(BackGroundColorFilePath));

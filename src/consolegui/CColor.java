@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *　CDisplayで使用する色の定義クラス 
- *  色の定数を提供し，エスケープシーケンスとの変換を行います．
- */ 
+ * CDisplayで使用する色の定義クラス
+ * 色の定数を提供し，エスケープシーケンスとの変換を行います．
+ */
 public final class CColor {
     /**
      * 色をデフォルトにします．デフォルトは使用する側の設定に従うことを要請しています.
@@ -60,15 +60,17 @@ public final class CColor {
 
     /**
      * 背景色のエスケープシーケンスを取得します．
+     * 
      * @param color 色の定数
      * @return 背景色のエスケープシーケンス
      */
     public static String getBackGroundColor(int color) {
         return BackGroundColorMap.get(color);
     }
-    
+
     /**
      * 文字色のエスケープシーケンスを取得します．
+     * 
      * @param color 色の定数
      * @return 文字色のエスケープシーケンス
      */
