@@ -64,12 +64,12 @@ public class SpriteBuildService {
             }
             Cell_tmp.add(row);
         }
-        int l = Cell_tmp.get(0).size();
-        for (int i = 0; i < Cell_tmp.size(); i++) {
-            if (l != Cell_tmp.get(i).size()) {
-                throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : スプライトデータの各行のサイズが一致しません");
-            }
-        }
+        // int l = Cell_tmp.get(0).size();
+        // for (int i = 0; i < Cell_tmp.size(); i++) {
+        //     if (l != Cell_tmp.get(i).size()) {
+        //         throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : スプライトデータの各行のサイズが一致しません");
+        //     }
+        // }
 
         return Cell_tmp;
     }
