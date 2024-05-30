@@ -30,7 +30,7 @@ public class StringService extends CObject {
      */
     public StringService(CDisplay CView, String str, int x, int y, int SpriteColor, int BackGroundColor,
             boolean isvisible) {
-        super(CView, SpriteBuildService.BuildModel(new ArrayList<ArrayList<Character>>(' '), 0, 0), x, y, isvisible);
+        super(CView, SpriteBuildService.BuildModel(new ArrayList<ArrayList<Character>>(' '), SpriteColor, BackGroundColor), x, y, isvisible);
         this.str = str;
         this.SpriteColor = SpriteColor;
         this.BackGroundColor = BackGroundColor;
