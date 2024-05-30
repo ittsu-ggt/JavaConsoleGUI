@@ -132,7 +132,8 @@ public class SpriteBuildService {
             return lines;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : ファイルの読み込みに失敗しました．ファイル名 : "+FilePath);
+            Path tmp=File_Path.toAbsolutePath();
+            throw new IllegalArgumentException(SpriteBuildService.class.getName() + " : ファイルの読み込みに失敗しました．ファイル名 : "+tmp.toString());
         }
     }
 
