@@ -6,10 +6,6 @@
 package consolegui;
 
 import java.util.LinkedList;
-
-import javax.management.RuntimeErrorException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

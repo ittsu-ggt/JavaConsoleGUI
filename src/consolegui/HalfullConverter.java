@@ -8,7 +8,6 @@ package consolegui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  * 半角文字と全角文字を相互に変換するクラス．
