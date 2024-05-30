@@ -14,9 +14,9 @@ import java.util.HashMap;
  */
 public class CObject {
 
-    private Map<String, ArrayList<ArrayList<DrawCell>>> CostumeList; // 2次元配列の宣言
-    private String CostumeName; // コスチューム名
-    private CDisplay CView; // 登録先コンソールビュー
+    protected Map<String, ArrayList<ArrayList<DrawCell>>> CostumeList; // 2次元配列の宣言
+    protected String CostumeName; // コスチューム名
+    protected CDisplay CView; // 登録先コンソールビュー
 
     /**
      * モデルのx座標
