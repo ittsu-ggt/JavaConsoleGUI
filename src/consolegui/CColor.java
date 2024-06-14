@@ -29,7 +29,7 @@ public final class CColor {
 
     private static Map<Integer, String> BackGroundColorMap = new HashMap<Integer, String>() {
         {
-            put(0, "\u001B[47m"); // デフォルト
+            put(0, "\u001B[40m"); // デフォルト
             put(1, "\u001B[40m"); // 黒
             put(2, "\u001B[41m"); // 赤
             put(3, "\u001B[42m"); // 緑
@@ -46,7 +46,7 @@ public final class CColor {
     private static Map<Integer, String> WordColorMap = new HashMap<Integer, String>() // Mapの宣言、初期化
     {
         {
-            put(0, "\u001B[30m"); // デフォルト
+            put(0, "\u001B[37m"); // デフォルト
             put(1, "\u001B[30m"); // 黒
             put(2, "\u001B[31m"); // 赤
             put(3, "\u001B[32m"); // 緑
