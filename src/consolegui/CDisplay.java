@@ -190,8 +190,8 @@ public class CDisplay {
      * @param obj 削除する描画オブジェクト
      */
     public void RemoveObject(CObject obj) {
-        if (!IsRegistrationObject(obj))
-            throw new IllegalArgumentException(this.getClass().getName() + " : 管理されていないオブジェクトです");
+        // if (!IsRegistrationObject(obj))
+        //     throw new IllegalArgumentException(this.getClass().getName() + " : 管理されていないオブジェクトです");
         ObjectsList.remove(obj);
         return;
     }
