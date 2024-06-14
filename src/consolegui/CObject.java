@@ -88,6 +88,10 @@ public class CObject {
         return this.IsVisible;
     }
 
+    public int getthisDrawingOrder(){
+        return this.CView.getObjectDrawingOrder(this);
+    }
+
     /**
      * コスチュームの存在を確認する
      */
@@ -171,6 +175,9 @@ public class CObject {
     public void RemoveCostume(String CostumeName) {
         if (!this.CostumeList.containsKey(CostumeName))
             throw new IllegalArgumentException(this.getClass().getName() + " : 存在しないコスチューム名です");
+        if(this.CostumeName.equals(CostumeName)){
+            throw new IllegalArgumentException(this.getClass().getName() + " : 現在表示中のコスチュームは削除できません．コスチュームを削除する際にはまず切り替えてください");
+        }
         this.CostumeList.remove(CostumeName);
         return;
     }
@@ -248,7 +255,12 @@ public class CObject {
      * モデルを削除する
      */
     public void RemoveMe() {
+        this.SetVisible(false);
         this.CView.RemoveObject(this);
+        this.CView = null;
+        this.CostumeList = null;
+        CostumeName = null;
+        return ;
     }
 
     /// モデル同士の衝突判定群
