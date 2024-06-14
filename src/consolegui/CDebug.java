@@ -44,7 +44,7 @@ public class CDebug {
         str.remove(0);
     }
 
-    private void Update() {
+    public void Update() {
         for (int i = 0; i < str.size(); i++) {
             str.get(i).SetLocation(view.getCameraX() + x, view.getCameraY() + y + i);
             str.get(i).SetVisible(true);
